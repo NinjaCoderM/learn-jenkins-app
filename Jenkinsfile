@@ -61,7 +61,7 @@ pipeline {
                            sleep 10
                            echo 'use *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
                            echo 'nicht empfohlen in Produktion -> *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
-                           echo 'sic *;)"*
+                           echo 'sic *;)"*'
                            npx playwright test --reporter=html
                         '''
                     }
