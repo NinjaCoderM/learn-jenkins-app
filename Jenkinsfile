@@ -70,6 +70,9 @@ pipeline {
     post{
         always{
            junit 'jest-results/junit.xml'
+           sh "echo 'Install Plugin html Publisher in Jenkins'"
+           sh "echo 'Use Pipeline Syntax at the End of the Pipeline in jenkins! Choose publishHTML: Publish HTML Report and add directory playwright-report -> The generated Line is seen in next line! '"
+           publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
         }
     }
 }
