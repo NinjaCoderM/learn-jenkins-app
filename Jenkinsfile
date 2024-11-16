@@ -54,9 +54,13 @@ pipeline {
                            echo 'E2E stage'
                            echo 'innerhalb des Projekts unter node_modules/.bin installieren mit *npm install serve*'
                            npm install serve
-                           echo 'geht ohne root durch weglassen von -g in npm install serve mit *node_modules/.bin/serve -s build*'
-                           node_modules/.bin/serve -s build
+                           echo 'geht ohne root durch weglassen von -g in npm install serve mit *node_modules/.bin/serve -s build &*'
+                           echo '*&* is used to run server in background !!!'
+                           node_modules/.bin/serve -s build &
+                           echo 'time for server to start *sleep 10*'
+                           sleep 10
                            npx playwright test
+
                         '''
                     }
                 }
