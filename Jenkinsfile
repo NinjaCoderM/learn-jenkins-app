@@ -44,13 +44,16 @@ pipeline {
                             //https://playwright.dev/docs/docker
                             image 'mcr.microsoft.com/playwright:v1.48.1-noble'
                             reuseNode true
+                            // args '-u root:root'
                         }
                     }
                     steps {
                         sh '''
                            echo 'E2E stage'
-                           npm install -g serve
-                           serve -s build
+                           //npm install -g serve //-> get nur mit root
+                           npm install serve // innerhalb des Projekts unter node_modules/.bin installieren
+                           //serve -s build //-> nur bei npm install -g serve
+                           node_modules/.bin/serve -s build //-> geht ohne root durch weglassen von -g in npm install serve
                            npx playwright test
                         '''
                     }
