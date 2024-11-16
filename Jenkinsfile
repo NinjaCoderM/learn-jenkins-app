@@ -59,7 +59,7 @@ pipeline {
                            node_modules/.bin/serve -s build &
                            echo 'time for server to start *sleep 10*'
                            sleep 10
-                           npx playwright test --report=html
+                           npx playwright test --reporter=html
 
                         '''
                     }
