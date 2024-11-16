@@ -20,22 +20,24 @@ pipeline {
                 '''
             }
         }
-        stage('test') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
+        stage('run tst'){
+            parallel{
+                stage('test') {
+                    agent {
+                        docker {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh '''
+                           echo 'Test stage'
+                           ls -l build/index.html
+                           npm test
+                        '''
+                    }
                 }
-            }
-            steps {
-                sh '''
-                   echo 'Test stage'
-                   ls -l build/index.html
-                   npm test
-                '''
-            }
-        }
-        stage('E2E') {
+                stage('E2E') {
                     agent {
                         docker {
                             // Quelle für E2E playright
@@ -66,7 +68,10 @@ pipeline {
                         '''
                     }
                 }
+            }
+        }
     }
+
     post{
         always{
            junit 'jest-results/junit.xml'
