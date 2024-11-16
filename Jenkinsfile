@@ -42,7 +42,7 @@ pipeline {
                             // https://playwright.dev/
                             // Quelle image docker
                             // https://playwright.dev/docs/docker
-                            image 'mcr.microsoft.com/playwright:v1.48.1-noble'
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                             reuseNode true
                             // args '-u root:root'
                         }
