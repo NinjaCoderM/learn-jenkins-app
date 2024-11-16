@@ -59,8 +59,10 @@ pipeline {
                            node_modules/.bin/serve -s build &
                            echo 'time for server to start *sleep 10*'
                            sleep 10
+                           echo 'use *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
+                           echo 'nicht empfohlen in Produktion -> *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
+                           echo 'sic *;)"*
                            npx playwright test --reporter=html
-
                         '''
                     }
                 }
