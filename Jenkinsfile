@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         NETLIFY_SITE_ID = 'c6e7d834-e196-410f-a226-dc7afb62bc8a'
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
     }
 
     stages {
@@ -89,6 +90,7 @@ pipeline {
                    echo 'Aufruf local weil -g fehlt unter node_modules/.bin/netlify --version'
                    node_modules/.bin/netlify --version
                    echo "Start Deployment ... NETLIVY_SITE_ID must be set in environment: $NETLIFY_SITE_ID"
+                   node_modules/.bin/netlify status
 
                 '''
             }
