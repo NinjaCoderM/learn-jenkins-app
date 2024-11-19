@@ -70,6 +70,25 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                   echo 'npm install netlify-cli -g geht nicht wegen Berechtigung / keine root Rechte'
+                   npm install netlify-cli
+                   echo 'Aufruf local weil -g fehlt unter node_modules/.bin/netlify --version'
+                   node_modules/.bin/netlify --version
+                '''
+            }
+        }
+
+
     }
 
     post{
