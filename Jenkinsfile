@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        NETLIFY_SITE_ID = 'c6e7d834-e196-410f-a226-dc7afb62bc8a'
+    }
+
     stages {
         stage('Build') {
             agent {
@@ -84,6 +88,8 @@ pipeline {
                    npm install netlify-cli
                    echo 'Aufruf local weil -g fehlt unter node_modules/.bin/netlify --version'
                    node_modules/.bin/netlify --version
+                   echo "Start Deployment ... NETLIVY_SITE_ID must be set in environment: $NETLIFY_SITE_ID"
+
                 '''
             }
         }
