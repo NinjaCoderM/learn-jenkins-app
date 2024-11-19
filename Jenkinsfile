@@ -91,7 +91,7 @@ pipeline {
                    node_modules/.bin/netlify --version
                    echo "Start Deployment ... NETLIVY_SITE_ID must be set in environment: $NETLIFY_SITE_ID"
                    node_modules/.bin/netlify status
-
+                   node_modules/.bin/netlify deploy --dir=build --prod
                 '''
             }
         }
