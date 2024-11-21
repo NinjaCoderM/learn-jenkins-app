@@ -101,6 +101,9 @@ pipeline {
                    node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
                    echo 'Install jq mit node (weil einfacher) normalerweise *npm install netlify-cli node-jq* in erster Zeile'
                    npm install node-jq
+                   echo 'CI_ENVIRONMENT_URL ist nur im sh Block sichtbar! Kein Abstand bei = CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json) '
+                   echo 'Deploy staging könnte in Staging E2E dazugefügt werden! Bleibt aber wegen der Variable als Demo'
+                   CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json)
                 '''
                 script {
                     env.netlify_response_url_staging = sh(script: "node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json", returnStdout: true).trim()
