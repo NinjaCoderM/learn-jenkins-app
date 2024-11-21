@@ -109,6 +109,38 @@ pipeline {
             }
         }
 
+        stage('Staging E2E') {
+                    agent {
+                        docker {
+                            // Quelle für E2E playright!
+                            // https://playwright.dev/
+                            // Quelle image docker
+                            // https://playwright.dev/docs/docker
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode true
+                            // args '-u root:root'
+                        }
+                    }
+                    environment{
+                        CI_ENVIRONMENT_URL = ${env.netlify_response_url_staging}
+                    }
+
+                    steps {
+                        sh '''
+                           echo 'Prod E2E stage'
+                           echo 'use *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
+                           echo 'nicht empfohlen in Produktion -> *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
+                           echo 'sic *;)"*'
+                           npx playwright test --reporter=html
+                        '''
+                    }
+                    post{
+                        always{
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright Staging E2E', reportTitles: '', useWrapperFileDirectly: true])
+                        }
+                    }
+                }
+
         /*
         stage('Approve Deployment'){
             steps{
