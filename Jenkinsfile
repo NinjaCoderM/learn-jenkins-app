@@ -151,27 +151,7 @@ pipeline {
         }
         */
 
-        stage('Deploy prod') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                   echo 'npm install netlify-cli -g geht nicht wegen Berechtigung / keine root Rechte'
-                   npm install netlify-cli
-                   echo 'Aufruf local weil -g fehlt unter node_modules/.bin/netlify --version'
-                   node_modules/.bin/netlify --version
-                   echo "Start Deployment ... NETLIVY_SITE_ID must be set in environment: $NETLIFY_SITE_ID"
-                   node_modules/.bin/netlify status
-                   node_modules/.bin/netlify deploy --dir=build --prod
-                '''
-            }
-        }
-
-        stage('Prod E2E') {
+        stage('Deploy Prod with E2E') {
             agent {
                 docker {
                     // Quelle für E2E playright!
@@ -189,6 +169,14 @@ pipeline {
 
             steps {
                 sh '''
+                   node --version
+                   echo 'npm install netlify-cli -g geht nicht wegen Berechtigung / keine root Rechte'
+                   npm install netlify-cli
+                   echo 'Aufruf local weil -g fehlt unter node_modules/.bin/netlify --version'
+                   node_modules/.bin/netlify --version
+                   echo "Start Deployment ... NETLIVY_SITE_ID must be set in environment: $NETLIFY_SITE_ID"
+                   node_modules/.bin/netlify status
+                   node_modules/.bin/netlify deploy --dir=build --prod
                    echo 'Prod E2E stage'
                    echo 'use *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
                    echo 'nicht empfohlen in Produktion -> *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
