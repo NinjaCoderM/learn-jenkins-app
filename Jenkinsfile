@@ -103,6 +103,14 @@ pipeline {
             }
         }
 
+        stage('Approve Deployment'){
+            steps{
+                timeout(3) {
+                    input message: 'Bitte um Bestätigung des Deployments - Anwendung jenkinsFromGit', ok: 'Yes, proceed with deploy'
+                }
+            }
+        }
+
         stage('Deploy prod') {
             agent {
                 docker {
