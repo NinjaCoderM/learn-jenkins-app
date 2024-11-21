@@ -97,8 +97,8 @@ pipeline {
                    node_modules/.bin/netlify --version
                    echo "Start Deployment to staging environment... NETLIVY_SITE_ID must be set in environment: $NETLIFY_SITE_ID"
                    node_modules/.bin/netlify status
-                   echo 'netlify deploy ohne *--dir=build* --> staging environment'
-                   node_modules/.bin/netlify deploy
+                   echo 'netlify deploy ohne prod *--dir=build prod* zu *--dir=build*--> staging environment'
+                   node_modules/.bin/netlify deploy --dir=build
                 '''
             }
         }
