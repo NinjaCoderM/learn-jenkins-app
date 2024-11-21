@@ -122,7 +122,7 @@ pipeline {
                         }
                     }
                     environment{
-                        CI_ENVIRONMENT_URL = ${env.netlify_response_url_staging}
+                        CI_ENVIRONMENT_URL = '${env.netlify_response_url_staging}'
                     }
 
                     steps {
