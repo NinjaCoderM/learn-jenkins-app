@@ -45,7 +45,7 @@ pipeline {
                 stage('E2E') {
                     agent {
                         docker {
-                            // Quelle für E2E playright
+                            // Quelle für E2E playright!
                             // https://playwright.dev/
                             // Quelle image docker
                             // https://playwright.dev/docs/docker
