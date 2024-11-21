@@ -101,8 +101,11 @@ pipeline {
                    node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
                    echo 'Install jq mit node (weil einfacher) normalerweise *npm install netlify-cli node-jq* in erster Zeile'
                    npm install node-jq
-                   node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json
                 '''
+                script {
+                    env.netlify_response_url_staging = sh(script: "node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json", returnStdout: true).trim()
+                }
+                echo "netlify_response_url_staging: ${env.netlify_response_url_staging}"
             }
         }
 
