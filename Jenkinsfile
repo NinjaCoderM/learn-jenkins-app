@@ -103,6 +103,7 @@ pipeline {
                    npm install node-jq
                    echo 'CI_ENVIRONMENT_URL ist nur im sh Block sichtbar! Kein Abstand bei = CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json) '
                    echo 'Deploy staging könnte in Staging E2E dazugefügt werden! Bleibt aber wegen der Variable als Demo'
+                   echo 'environment Block mit CI_ENVIRONMENT_URL muss bleiben, sonst wird er von playwright nicht erkannt'
                    CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json)
                 '''
                 script {
