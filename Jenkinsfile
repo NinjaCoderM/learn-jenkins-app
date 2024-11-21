@@ -82,7 +82,28 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+         stage('Deploy staging') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                   echo 'npm install netlify-cli -g geht nicht wegen Berechtigung / keine root Rechte'
+                   npm install netlify-cli
+                   echo 'Aufruf local weil -g fehlt unter node_modules/.bin/netlify --version'
+                   node_modules/.bin/netlify --version
+                   echo "Start Deployment to staging environment... NETLIVY_SITE_ID must be set in environment: $NETLIFY_SITE_ID"
+                   node_modules/.bin/netlify status
+                   echo 'netlify deploy ohne *--dir=build* --> staging environment'
+                   node_modules/.bin/netlify deploy
+                '''
+            }
+        }
+
+        stage('Deploy prod') {
             agent {
                 docker {
                     image 'node:18-alpine'
