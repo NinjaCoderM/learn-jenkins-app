@@ -55,7 +55,8 @@ pipeline {
                             // https://playwright.dev/
                             // Quelle image docker
                             // https://playwright.dev/docs/docker
-                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            //image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            image 'my-playwright'
                             reuseNode true
                             // args '-u root:root'
                         }
@@ -66,10 +67,11 @@ pipeline {
                         sh '''
                            echo 'E2E stage local'
                            echo 'innerhalb des Projekts unter node_modules/.bin installieren mit *npm install serve*'
-                           npm install serve
+                           echo 'im Dockerfile mit -g *npm install serve*'
                            echo 'geht ohne root durch weglassen von -g in npm install serve mit *node_modules/.bin/serve -s build &*'
                            echo '*&* is used to run server in background !!!'
-                           node_modules/.bin/serve -s build &
+                           echo 'nicht mehr weil -g  *node_modules/.bin/*'
+                           serve -s build &
                            echo 'time for server to start *sleep 10*'
                            sleep 10
                            echo 'use *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
