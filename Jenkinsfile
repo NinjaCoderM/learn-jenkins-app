@@ -8,6 +8,11 @@ pipeline {
     }
 
     stages {
+        stage('Docker'){
+            steps{
+                sh 'docker build -t my-playwright .'
+            }
+        }
         stage('Build') {
             agent {
                 docker {
@@ -163,7 +168,10 @@ pipeline {
                     // https://playwright.dev/
                     // Quelle image docker
                     // https://playwright.dev/docs/docker
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    // image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    // eigenes Image erstellt stage Docker über Dockerfile
+                    image 'my-playwright'
+
                     reuseNode true
                     // args '-u root:root'
                 }
@@ -176,12 +184,15 @@ pipeline {
                 sh '''
                    node --version
                    echo 'npm install netlify-cli -g geht nicht wegen Berechtigung / keine root Rechte'
-                   npm install netlify-cli
+                   echo 'bereits von stage Docker über Dockerfile ... npm install netlify-cli'
                    echo 'Aufruf local weil -g fehlt unter node_modules/.bin/netlify --version'
-                   node_modules/.bin/netlify --version
+                   echo 'durch Dockerfile kann global installiert werden node_modules/.bin/netlify --version'
+                   netlify --version
                    echo "Start Deployment ... NETLIVY_SITE_ID must be set in environment: $NETLIFY_SITE_ID"
-                   node_modules/.bin/netlify status
-                   node_modules/.bin/netlify deploy --dir=build --prod
+                   echo 'Änderung auf global node_modules/.bin/netlify status'
+                   netlify status
+                   echo 'Änderung auf global node_modules/.bin/netlify deploy --dir=build --prod'
+                   netlify deploy --dir=build --prod
                    echo 'Prod E2E stage'
                    echo 'use *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
                    echo 'nicht empfohlen in Produktion -> *System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts;)"* in Jenkins verwalten / Skript Console '
