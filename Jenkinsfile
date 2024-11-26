@@ -8,28 +8,7 @@ pipeline {
     }
 
     stages {
-        stage('AWS'){
-            agent{
-                docker{
-                    image 'amazon/aws-cli:latest'
-                    args '--entrypoint=""'
-                }
-            }
-            environment{
-                AWS_S3_BUCKET = 'learn-jenkins-202411252156'
-            }
-            steps{
-                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                    sh '''
-                        aws --version
-                        aws s3 ls
-                        echo "Hello S3!" > index.html
-                        aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
-                    '''
-                }
 
-            }
-        }
         stage('Docker'){
             steps{
                 sh 'docker build -t my-playwright .'
@@ -53,6 +32,31 @@ pipeline {
                 '''
             }
         }
+
+        stage('AWS'){
+            agent{
+                docker{
+                    image 'amazon/aws-cli:latest'
+                    args '--entrypoint=""'
+                }
+            }
+            environment{
+                AWS_S3_BUCKET = 'learn-jenkins-202411252156'
+            }
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    sh '''
+                        aws --version
+                        aws s3 ls
+                        echo "Hello S3!" > index.html
+                        echo "replaced ... aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html"
+                        aws s3 sync build s3://$AWS_S3_BUCKET
+                    '''
+                }
+
+            }
+        }
+
         stage('run tst'){
             parallel{
                 stage('test') {
