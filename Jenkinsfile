@@ -36,7 +36,8 @@ pipeline {
         stage('AWS'){
             agent{
                 docker{
-                    image 'amazon/aws-cli:latest'
+                //  image 'amazon/aws-cli:latest'
+                    image 'my-aws-cli'
                     reuseNode true
                     args '--entrypoint=""'
                 }
